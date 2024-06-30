@@ -46,6 +46,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.5/jquery.fancybox.min.css"
       media="screen"
     />
+    <script src="js/testi.js"></script>
   </head>
   <body>
     <!--header section start -->
@@ -357,96 +358,79 @@
           </div>
         </div>
       </div>
-      <div
-        id="carouselExampleIndicators"
-        class="carousel slide"
-        data-ride="carousel"
-      >
-        <ol class="carousel-indicators">
-          <li
-            data-target="#carouselExampleIndicators"
-            data-slide-to="0"
-            class="active"
-          ></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
-          <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
-        </ol>
-        <div class="carousel-inner">
-          <div class="carousel-item active">
-            <div class="client_section_2">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="testimonial_section_2">
-                      <h4 class="client_name_text">Hendrik Feraldy</h4>
-                      <p class="customer_text">
-                        Untuk kualitas dan rasa makanan lumayan ok juga
-                        ternyata. Wajib coba Nasi Rempah nya, isiannya mirip
-                        nasi goreng rempah dengan satu potong ayam goreng.
-                        Spaghetti nya juga cukup ok, mirip bumbu siap saji.
-                        Untuk minumannya Matcha Latte dan Butterscotch nya juga
-                        ok. Untuk harga nya ok banget. Terletak di area kampung
-                        batik, kalian juga bisa sambil belanja batik di sekitar
-                        area.
-                      </p>
+      <div class="container">
+        <div class="row justify-content-center align-items-center">
+            <div class="col-md-6">
+                <form id="testimonialForm" action="../php/submit_testimonial.php" method="post" class="p-4 border rounded">
+                    <h2 class="text-center mb-4">Form Testimonial</h2>
+                    <div class="mb-3">
+                        <label for="nama" class="form-label">Nama:</label>
+                        <input type="text" id="nama" name="nama" class="form-control" required>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="client_section_2">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="testimonial_section_2">
-                      <h4 class="client_name_text">bambang handana</h4>
-                      <p class="customer_text">
-                        Yess ini slh satu cafe sekaligus toko batik. Ada bbrp di
-                        gang kauman ini dg konsep sama. Tp ini konsep warung
-                        kopinya masok 👍🏿 dg kopinya mantap.. Pesen espresso
-                        matcha endul dg menu makanan yg enak mnrut lidah saya.
-                        Pesan 3 menu dan satu menu pisang apa lupa yg mntt sy
-                        pisangnya terlalu matang. Tp overall enak semua dr semua
-                        pesanan. Kopi juga enak yg signature nya pas di rasa.
-                        Konsep omah lawas solo dan dg toilet bentuk paturasan
-                        unik. Klo pas beruntung ada ibu² yg sdg membatik krn wjr
-                        sbnrnya ini toko batik. Parkiran ada kok wlpn g terlalu
-                        besar, tetap paling enak bawa motor. Ruangan ada ber AC
-                        tp y tdk terlalu besar. Must try buat yg main ke wisata
-                        batik kauman ada bbrp resto/cafr disini..
-                      </p>
+                    
+                    <div class="mb-3">
+                        <label for="testimoni" class="form-label">Testimoni:</label>
+                        <textarea id="testimoni" name="testimoni" class="form-control" rows="5" required></textarea>
                     </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="carousel-item">
-            <div class="client_section_2">
-              <div class="container">
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="testimonial_section_2">
-                      <h4 class="client_name_text">nugraheni feni</h4>
-                      <p class="customer_text">
-                        Cafe dan resto yang menggabungkan tempat makan dan toko
-                        batik. Sambil menunggu pesanan makanan siap, kita bisa
-                        lihat2 busana berbahan batik disamping itu bagi yang
-                        berminat belajar membatik juga tersedia. Tidak perlu
-                        merogoh kantong dalam2 untuk makanan yang enak. Dan yang
-                        pasti tempatnya nyaman
-                      </p>
+                    
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary">Kirim Testimonial</button>
                     </div>
-                  </div>
-                </div>
-              </div>
+                </form>
             </div>
-          </div>
         </div>
-      </div>
     </div>
+    <?php
+include '../php/koneksi.php'; 
+
+$successMessage = isset($_GET['success']) ? $_GET['success'] : '';
+$errorMessage = isset($_GET['error']) ? $_GET['error'] : '';
+
+$sql = "SELECT * FROM testimoni";
+$result = $conn->query($sql);
+?>
+
+<div class="container mt-5">
+    <h2>Data Testimonial</h2>
+
+    <?php if ($successMessage): ?>
+        <div class="alert alert-success">
+            <?php echo $successMessage; ?>
+        </div>
+    <?php endif; ?>
+
+    <?php if ($errorMessage): ?>
+        <div class="alert alert-danger">
+            <?php echo $errorMessage; ?>
+        </div>
+    <?php endif; ?>
+
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nama</th>
+                <th>Testimoni</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if ($result->num_rows > 0): ?>
+                <?php while($row = $result->fetch_assoc()): ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['nama']; ?></td>
+                        <td><?php echo $row['testimoni']; ?></td>
+                    </tr>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <tr>
+                    <td colspan="3">Tidak ada data testimonial.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
+</div>
+
     <!-- testimonial section end -->
     <!-- Ambience section start -->
     <section id="ambience" class="gallery_section layout_padding">
@@ -547,7 +531,6 @@
           </div>
         </div>
       </div>
-      <!-- reels end -->
     </div>
     </section>
     <!-- Ambience section end -->
@@ -713,5 +696,6 @@
     <!-- sidebar -->
     <script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
     <script src="js/custom.js"></script>
+    <script src="js/testi.js"></script>
   </body>
 </html>
