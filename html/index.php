@@ -531,6 +531,7 @@ $result = $conn->query($sql);
           </div>
         </div>
       </div>
+      <!-- reels end -->
     </div>
     </section>
     <!-- Ambience section end -->
